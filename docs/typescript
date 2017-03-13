@@ -1,0 +1,72 @@
+Script started on Thu 02 Mar 2017 10:14:40 AM PST
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ ls
+crit  data  docs  logs	raw  script  temp  typescript
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ cd script
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ ls
+env  get_nwrfc_gridded.sh  old	README.md  resample_rfc2cwms.py  skagit_27Feb2017  skagit_grid.nc
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ less README.md
+[?1049h[?1h=GRIDDED DATA CONVERSION
+=======================
+This product downloads gridded data in netCDF format and converts to a .DSS file.
+
+
+Example NetCDF Data
+----
+
+Obs Prec for the 24 hour period ending at 12Z on Dec 12, 2016.  The nc file contains 5 layers: 24hr and four 6 hr files.
+Blockedhttps://www.nwrfc.noaa.gov/weather/netcdf/precip_ptr_grid_20161216.nc.gz
+
+Obs Temp for the previous 24 period ending at 12Z on Dec 12, 2016.  The nc file contains 6 layers: four 6hr fi les of instantaneous temp at 18,00,06,12Z and max and min temp.
+Blockedhttps://www.nwrfc.noaa.gov/weather/netcdf/temperature_ptr_grid_20161216.nc.gz
+
+Forecast Prec with layers representing 6hr precip totals extending 10 days into the future.
+Blockedhttps://www.nwrfc.noaa.gov/weather/netcdf/qpf06f_has_2016121612f240_stegemil_201612161343.nc.gz
+
+Forecast Max Temp with layers representing maximum daily temperature extending 10 days into the future
+Blockedhttps://www.nwrfc.noaa.gov/weather/netcdf/tx24f_has_2016121612f240_stegemil_201612161342.nc.gz
+
+Forecast Min Temp with layers representing minimum daily temperature extending 10 days into the future
+Blockedhttps://www.nwrfc.noaa.gov/weather/netcdf/tn24f_has_2016121612f240_stegemil_201612161342.nc.gz
+
+[7mREADME.md (END)[27m[K[K[?1l>[?1049ldquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ cd ..
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ ls
+crit  data  docs  logs	raw  script  temp  typescript
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ cd /usr/dx/control/flags
+dquan@cbt:/usr/dx/control/flags$ ls
+common_tee_feed_run.on			   nwdp-nwrfc_gridded-get_nwrfc_gridded.sh.off
+nwdp_awips_data_get_awips_data_sftp.sh.on
+dquan@cbt:/usr/dx/control/flags$ clear
+[3;J[H[2Jdquan@cbt:/usr/dx/control/flags$ ls
+common_tee_feed_run.on			   nwdp-nwrfc_gridded-get_nwrfc_gridded.sh.off
+nwdp_awips_data_get_awips_data_sftp.sh.on
+dquan@cbt:/usr/dx/control/flags$ vi nwdp-awips-[K_data-get_awips_data_sftp.sh.on[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kcp nwdp_awips_data_get_awips_data_sftp.sh.on nwdp-awips_data-get_awips_data_s ftp.sh.on
+dquan@cbt:/usr/dx/control/flags$ ls -l
+total 0
+-rw-r--r-- 1 root  root  0 Aug 31  2016 common_tee_feed_run.on
+-rw-r--r-- 1 root  root  0 Aug 31  2016 nwdp_awips_data_get_awips_data_sftp.sh.on
+-rw-r--r-- 1 dquan rwcds 0 Mar  2 10:45 nwdp-awips_data-get_awips_data_sftp.sh.on
+-rw-rw-r-- 1 rwcds rwcds 0 Feb 27 13:48 nwdp-nwrfc_gridded-get_nwrfc_gridded.sh.off
+dquan@cbt:/usr/dx/control/flags$ cd /usr/dx/nwdp/nwrfc_gridded/
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ ls
+crit  data  docs  logs	raw  script  temp  typescript
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ cd logs
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/logs$ ls
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/logs$ cd ..
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ ls
+crit  data  docs  logs	raw  script  temp  typescript
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded$ cd script
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ less
+Missing filename ("less --help" for help)
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ ls
+env  get_nwrfc_gridded.sh  old	README.md  resample_rfc2cwms.py  skagit_27Feb2017  skagit_grid.nc
+dquan@cbt:/usr/dx/nwdp/nwrfc_gridded/script$ vi [K[K[Kless READ*
+[?1049h[?1h=GRIDDED DATA CONVERSION
+=======================
+This product downloads gridded data in netCDF format and converts to a .DSS file.
+
+
+Example NetCDF Data
+----
+
+Obs Prec for the 24 hour period ending at 12Z on Dec 12, 2016.  The nc file contains 5 layers: 24hr and four 6 hr files.
+Blockedhttps://www.n
