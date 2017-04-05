@@ -24,28 +24,30 @@ if [ $? -ne 0 ]; then
   exit
 fi
 
-# Downloads gridded data in netCDF format and untar
+# Downloads gridded data in netCDF format and unzip
 #---------------------------------------------------
 
-cd /usr/dx/nwdp/nwrfc_gridded/raw/
-wget https://www.nwrfc.noaa.gov/weather/netcdf/precip_ptr_grid_20170207.nc.gz
-wget https://www.nwrfc.noaa.gov/weather/netcdf/qpf06f_has_20170207.nc.gz
+DATE=`date "+%Y%m%d"`
+YEAR=`date "+%Y"`
+URLBASE=https://www.nwrfc.noaa.gov/weather/netcdf/$YEAR/$DATE
 
-gunzip *.gz
-for i in $( ls *.nc ); do
-  echo item: $i
-  tar -xvf $i
-done
+cd /usr/dx/nwdp/nwrfc_gridded/raw/
+wget $URLBASE/QTF.${DATE}12.nc.gz
+wget $URLBASE/QTE.${DATE}12.nc.gz
+wget $URLBASE/QPF.${DATE}12.nc.gz
+wget $URLBASE/QPE.${DATE}12.nc.gz
+
+yes | gunzip *.gz
 
 cd ../temp
 rm *.asc
 
-# Downloads gridded data in netCDF format and untar
+# Resample netCDF gridded data to dss
 #---------------------------------------------------
 cd ../script
 . env/bin/activate
-./resample.py
+./resample.py ../raw/QPE.${DATE}12.nc ../raw/QPF.${DATE}12.nc
 
-cp ../temp/nwd* ../data
+cp ../temp/*.dss ../data
 
 rmdir $LOCK_DIR

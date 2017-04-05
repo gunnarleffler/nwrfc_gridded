@@ -3,7 +3,7 @@
 """
 Created on Fri Jan 27 12:21:27 2017
 @author: g3enhcdf
-Script to reproject and resample netcdf data to Albers Equal Area for a
+Script to reproject and resample netcdf data to Albers Equal Area for a 
 specified domain. Data is output as ascii files with arc header
 Chris Frans Chris.D.Frans@usace.army.mil
 """
@@ -26,38 +26,38 @@ Execute on command line passing QPE and QPF netcdf grids for 1st and second argu
 Otherwise edit below to specify paths, push outher inputs to arguments for more flexibility
 ###################################
 ######## Edit Inputs here #########'''
-project = 'nwd'
-targetgrid_nc = 'nwd_grid.nc'  #Grid to reproject and resample to
-#QPE_grid = sys.argv[1]
-#QPF_grid = sys.argv[2]
-QPF_grid = '../raw/2017020712_QPF6hr_NetCDF.nc'
-QPE_grid = '../raw/2017020712_QPE6hr_NetCDF.nc'
+project = 'NWD'
+targetgrid_nc = 'NWD_grid.nc'  #Grid to reproject and resample to
+grids = {"QPE": sys.argv[1], "QPF": sys.argv[2]}
+#QPF_grid = '../raw/2017020712_QPF6hr_NetCDF.nc'
+#QPE_grid = '../raw/2017020712_QPE6hr_NetCDF.nc'
 target_res = 2000  # meters, resolution of target grid
 source_res = 2500  # meters, source resolution used in interpolation method
-VAR = ['QPF', 'QPE']  # variable name to resample in source file
 #parameters for writing arc ascii output
-xllcorner = -1960000
-yllcorner = 3022000
-NODATA_value = -9999
+xllcorner = -2472017.8124344
+yllcorner = 1974263.3378744
+NODATA_value = 0.0
 ''' ########## End Inputs ###############
 ##########################################'''
 now = time.strftime("%d%b%Y")
 outdir = '../temp/'
-# Make output directory if it doesn't exist
+# Make output directory if it doesn't exist 
 if not os.path.exists(outdir):
   os.makedirs(outdir)
 
 # load lat-lon of the target grid
 fc = Dataset(targetgrid_nc)
-lon_targ = fc.variables['XLON'][:]
-lat_targ = fc.variables['XLAT'][:]
+lon_targ = fc.variables['x'][:]
+lat_targ = fc.variables['y'][:]
 fc.close()
 
-for variable in VAR:
-  # load lat-lon-value of the origin data,
+for variable in ['QPE', 'QPF']:  # variable name to resample in source file
+  # load lat-lon-value of the origin data, 
   # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
-  fr = Dataset(eval(variable + '_grid'))
-  ppt = fr.variables[variable][:, :, :]
+  fr = Dataset(grids[variable])
+  print fr
+  #ppt = fr.variables[variable][:, :, :]
+  ppt = fr.variables["QPF"][:, :, :]
   lons = fr.variables['x'][:]
   lats = fr.variables['y'][:]
   time = fr.variables['time'][:]
@@ -91,7 +91,7 @@ for variable in VAR:
         targ_def,
         radius_of_influence=source_res,
         sigmas=source_res / 2,
-        fill_value=None)
+        fill_value=NODATA_value)
 
     #now write out the data in asc
     for hour in range(6):
@@ -105,7 +105,7 @@ for variable in VAR:
       TheFile.write("yllcorner     %d\n" % yllcorner)
       TheFile.write("cellsize      %d\n" % target_res)
       TheFile.write("NODATA_value  %d\n" % NODATA_value)
-      #Note divide precip grid by 6 to convert to hourly
+      #Note divide precip grid by 6 to convert to hourly        
       np.savetxt(TheFile, ppt_resample / 6, fmt='%.5f', delimiter=" ")
       TheFile.close()
       #now convert the asc and store in dss file
