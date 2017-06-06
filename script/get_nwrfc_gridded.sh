@@ -38,6 +38,8 @@ wget $URLBASE/QTE.${DATE}12.nc.gz
 wget $URLBASE/QPF.${DATE}12.nc.gz
 wget $URLBASE/QPE.${DATE}12.nc.gz
 
+cp *.gz ../archive
+
 yes | gunzip *.gz
 
 cd ../temp

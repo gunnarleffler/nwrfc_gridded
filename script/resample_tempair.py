@@ -32,7 +32,7 @@ source_res = 2500  # meters, source resolution used in interpolation method
 #parameters for writing arc ascii output
 xllcorner = -2472017.8124344
 yllcorner = 1974263.3378744
-NODATA_value = 0.0
+NODATA_value = -999.0
 ''' ########## End Inputs ###############
 ##########################################'''
 now = time.strftime("%d%b%Y")
