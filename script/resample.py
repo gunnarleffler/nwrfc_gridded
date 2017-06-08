@@ -106,8 +106,7 @@ for index, row in basin_data.iterrows():
                                                3600).strftime('%Y%m%d%H')
         year = str(
             datetime.datetime.fromtimestamp(time[t] * 60 + hour * 3600).year)
-        month = str(
-            datetime.datetime.fromtimestamp(time[t] * 60 + hour * 3600).month)
+        month = datetime.datetime.fromtimestamp(time[t] * 60 + hour * 3600).strftime("%m")
         hr = datetime.datetime.fromtimestamp(time[t] * 60 + hour * 3600).hour
         filename = outdir + project + "_" + variable + date + '.asc'
         TheFile = open(filename, "w")
@@ -138,6 +137,6 @@ for index, row in basin_data.iterrows():
         dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-" + variable + "/"
         gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
-        ) + " GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
+        ) + " zlib=true GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
         print gridconvert
         subprocess.call(gridconvert, shell=True)
