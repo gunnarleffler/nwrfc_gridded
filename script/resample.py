@@ -32,6 +32,7 @@ source_res = 2500.0  # meters, source resolution used in interpolation method
 NODATA_value = -999.0
 buff = 10000.0  # buffer outside of model domain [m] (clip to larger extent)
 in2mm = 25.4
+loc2gmt = 420. #Conversion from local time to GMT [min]
 ''' ########## End Inputs ###############
 ##########################################'''
 
@@ -67,7 +68,7 @@ for index, row in basin_data.iterrows():
     ppt = fr.variables['QPF'][:, :, :] * in2mm
     lons = fr.variables['x'][:]
     lats = fr.variables['y'][:]
-    time = fr.variables['time'][:]
+    time = fr.variables['time'][:]+loc2gmt
     fr.close()
 
     lon, lat = np.meshgrid(lons, lats)
