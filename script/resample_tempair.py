@@ -30,7 +30,7 @@ Execute on command line passing QPE and QPF netcdf grids for 1st and second argu
 Otherwise edit below to specify paths, push outher inputs to arguments for more flexibility
 ###################################
 ######## Edit Inputs here #########'''
-grids = {"QTE": sys.argv[1], "TFMX": sys.argv[2]}
+grids = {"QTE": sys.argv[1], "QTF": sys.argv[2]}
 target_res = 2000.0  # meters, resolution of target grid
 source_res = 2500.0  # meters, source resolution used in interpolation method
 NODATA_value = -999.0
