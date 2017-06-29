@@ -33,8 +33,8 @@ URLBASE=https://www.nwrfc.noaa.gov/weather/netcdf/$YEAR/$DATE
 
 cd /usr/dx/nwdp/nwrfc_gridded/raw/
 rm *.nc
-#wget $URLBASE/QTF.${DATE}12.nc.gz
-#wget $URLBASE/QTE.${DATE}12.nc.gz
+wget $URLBASE/QTF.${DATE}12.nc.gz
+wget $URLBASE/QTE.${DATE}12.nc.gz
 wget $URLBASE/QPF.${DATE}12.nc.gz
 wget $URLBASE/QPE.${DATE}12.nc.gz
 
@@ -49,9 +49,9 @@ rm *.asc
 #---------------------------------------------------
 cd ../script
 . env/bin/activate
+./resample_tempair.py ../raw/QTE.${DATE}12.nc ../raw/QTF.${DATE}12.nc
 ./resample.py ../raw/QPE.${DATE}12.nc ../raw/QPF.${DATE}12.nc
-#./resample_tempair.py ../raw/QTE.${DATE}12.nc ../raw/QTF.${DATE}12.nc
 
-mv ../temp/*.dss ../data
+cp ../temp/*.dss ../data
 
 rmdir $LOCK_DIR
