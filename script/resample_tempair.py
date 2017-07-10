@@ -33,7 +33,7 @@ Otherwise edit below to specify paths, push outher inputs to arguments for more 
 grids = {"QTE": sys.argv[1], "QTF": sys.argv[2]}
 target_res = 2000.0  # meters, resolution of target grid
 source_res = 2500.0  # meters, source resolution used in interpolation method
-NODATA_value = -999.0
+NODATA_value = -999.00000
 buff = 10000.0  # buffer outside of model domain [m] (clip to larger extent)
 tmax_time = 23 # GMT
 tmin_time = 11 # GMT
@@ -207,10 +207,10 @@ for index, row in basin_data.iterrows():
                 TheFile = open(filename, "w")
                 TheFile.write("ncols %d\n" % x_size)
                 TheFile.write("nrows %d\n" % y_size)
-                TheFile.write("xllcorner     %d\n" % xllcorner)
-                TheFile.write("yllcorner     %d\n" % yllcorner)
+                TheFile.write("xllcorner     %d\n" % (xllcorner-buff))
+                TheFile.write("yllcorner     %d\n" % (yllcorner-buff))
                 TheFile.write("cellsize      %d\n" % target_res)
-                TheFile.write("NODATA_value  %d\n" % NODATA_value)       
+                TheFile.write("NODATA_value  %.5f\n" % NODATA_value)       
                 np.savetxt(TheFile, hourlyts[t,:,:], fmt='%.5f', delimiter=" ")
                 TheFile.close()
                   #now convert the asc and store in dss file
@@ -244,7 +244,10 @@ for index, row in basin_data.iterrows():
                     targ_def,
                     radius_of_influence=source_res,
                     sigmas=source_res / 2)
-            
+				#If masked arrays, fill with nodata values
+                if(isinstance(ta_resample,np.ma.MaskedArray)):
+					ta_resample.set_fill_value(NODATA_value)
+					ta_resample = ta_resample.filled()            
                 #now write out the data in asc
                 
                 date = datetime.datetime.fromtimestamp(time[t] * 60).strftime('%Y%m%d%H')
@@ -253,12 +256,12 @@ for index, row in basin_data.iterrows():
                 hr = datetime.datetime.fromtimestamp(time[t] * 60).hour
                 filename = outdir + project + "_" + variable + date + '.asc'
                 TheFile = open(filename, "w")
-                TheFile.write("ncols %d\n" % x_size)
-                TheFile.write("nrows %d\n" % y_size)
+                TheFile.write("ncols %d\n" % (x_size-buff))
+                TheFile.write("nrows %d\n" % (y_size-buff))
                 TheFile.write("xllcorner     %d\n" % xllcorner)
                 TheFile.write("yllcorner     %d\n" % yllcorner)
                 TheFile.write("cellsize      %d\n" % target_res)
-                TheFile.write("NODATA_value  %d\n" % NODATA_value)       
+                TheFile.write("NODATA_value  %.5f\n" % NODATA_value)       
                 np.savetxt(TheFile, ta_resample, fmt='%.5f', delimiter=" ")
                 TheFile.close()
                   #now convert the asc and store in dss file

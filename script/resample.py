@@ -110,8 +110,8 @@ for index, row in basin_data.iterrows():
       TheFile = open(filename, "w")
       TheFile.write("ncols %d\n" % x_size)
       TheFile.write("nrows %d\n" % y_size)
-      TheFile.write("xllcorner     %d\n" % xllcorner)
-      TheFile.write("yllcorner     %d\n" % yllcorner)
+      TheFile.write("xllcorner     %d\n" % (xllcorner-buff))
+      TheFile.write("yllcorner     %d\n" % (yllcorner-buff))
       TheFile.write("cellsize      %d\n" % target_res)
       TheFile.write("NODATA_value  %d\n" % NODATA_value)
       #Note divide precip grid by 6 to convert to hourly        
