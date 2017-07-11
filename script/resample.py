@@ -130,9 +130,9 @@ for index, row in basin_data.iterrows():
       else:
         endtime = datetime.datetime.fromtimestamp(time[t] *
                                                   60).strftime('%d%b%Y:%H%M')
-        dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-" + variable + "/"
-        gridconvert = os.path.join(
+      dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-" + variable + "/"
+      gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
-        print gridconvert
-        subprocess.call(gridconvert, shell=True)
+      print gridconvert
+      subprocess.call(gridconvert, shell=True)

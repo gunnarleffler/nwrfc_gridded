@@ -207,8 +207,8 @@ for index, row in basin_data.iterrows():
                 TheFile = open(filename, "w")
                 TheFile.write("ncols %d\n" % x_size)
                 TheFile.write("nrows %d\n" % y_size)
-                TheFile.write("xllcorner     %d\n" % (xllcorner-buff))
-                TheFile.write("yllcorner     %d\n" % (yllcorner-buff))
+                TheFile.write("xllcorner     %d\n" % (xllcorner))
+                TheFile.write("yllcorner     %d\n" % (yllcorner))
                 TheFile.write("cellsize      %d\n" % target_res)
                 TheFile.write("NODATA_value  %.5f\n" % NODATA_value)       
                 np.savetxt(TheFile, hourlyts[t,:,:], fmt='%.5f', delimiter=" ")
@@ -256,8 +256,8 @@ for index, row in basin_data.iterrows():
                 hr = datetime.datetime.fromtimestamp(time[t] * 60).hour
                 filename = outdir + project + "_" + variable + date + '.asc'
                 TheFile = open(filename, "w")
-                TheFile.write("ncols %d\n" % (x_size-buff))
-                TheFile.write("nrows %d\n" % (y_size-buff))
+                TheFile.write("ncols %d\n" % (x_size))
+                TheFile.write("nrows %d\n" % (y_size))
                 TheFile.write("xllcorner     %d\n" % xllcorner)
                 TheFile.write("yllcorner     %d\n" % yllcorner)
                 TheFile.write("cellsize      %d\n" % target_res)
