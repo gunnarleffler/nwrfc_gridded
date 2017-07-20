@@ -136,3 +136,11 @@ for index, row in basin_data.iterrows():
         ) + " zlib=true GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
       print gridconvert
       subprocess.call(gridconvert, shell=True)
+
+      #The following block is for writing blended paths
+      dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-QPB/"
+      gridconvert = os.path.join(
+            os.getcwd(), 'asc2DssGrid.sh'
+        ) + " zlib=true GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
+      print gridconvert
+      subprocess.call(gridconvert, shell=True)

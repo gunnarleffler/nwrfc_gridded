@@ -38,7 +38,7 @@ wget $URLBASE/QTE.${DATE}12.nc.gz
 wget $URLBASE/QPF.${DATE}12.nc.gz
 wget $URLBASE/QPE.${DATE}12.nc.gz
 
-cp *.gz ../archive
+#cp *.gz ../archive
 
 yes | gunzip *.gz
 
@@ -53,5 +53,8 @@ cd ../script
 ./resample.py ../raw/QPE.${DATE}12.nc ../raw/QPF.${DATE}12.nc
 
 cp ../temp/*.dss ../data
+
+rm ../raw/*.nc
+rm ../temp/*.asc
 
 rmdir $LOCK_DIR

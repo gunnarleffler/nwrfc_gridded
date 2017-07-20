@@ -245,11 +245,17 @@ for index, row in basin_data.iterrows():
           endtime = dates_disagg[t + 1].strftime('%d%b%Y:%H%M')
 
         dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-" + variable + "/"
-
         gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
+        print gridconvert
+        subprocess.call(gridconvert, shell=True)
 
+        #The following block is for writing blended paths
+        dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-QTB/"
+        gridconvert = os.path.join(
+            os.getcwd(), 'asc2DssGrid.sh'
+        ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
         print gridconvert
         subprocess.call(gridconvert, shell=True)
 
@@ -300,7 +306,14 @@ for index, row in basin_data.iterrows():
                                                     60).strftime('%d%b%Y:%H%M')
 
         dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-" + variable + "/"
+        gridconvert = os.path.join(
+            os.getcwd(), 'asc2DssGrid.sh'
+        ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
+        print gridconvert
+        subprocess.call(gridconvert, shell=True)
 
+        #The following block is for writing blended paths
+        dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-QTB/"
         gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
