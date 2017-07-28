@@ -33,6 +33,7 @@ URLBASE=https://www.nwrfc.noaa.gov/weather/netcdf/$YEAR/$DATE
 
 cd /usr/dx/nwdp/nwrfc_gridded/raw/
 rm *.nc
+rm *.gz
 wget $URLBASE/QTF.${DATE}12.nc.gz
 wget $URLBASE/QTE.${DATE}12.nc.gz
 wget $URLBASE/QPF.${DATE}12.nc.gz
