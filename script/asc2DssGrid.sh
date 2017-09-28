@@ -4,12 +4,14 @@
 #   JAVA_EXE
 #   CWMS_EXE
 
+. ~/.env_vars
+
 #:-------------------------------------------:
 #:  Program to be run
 #:-------------------------------------------:
 MAINCLASS="hec.heclib.grid.Asc2DssGrid"
 APPNAME="asc2DssGrid"
-CWMS_EXE=/home/rwcds/dx/nwdp/nwrfc_gridded/script/dssgrid
+CWMS_EXE=$DX_HOME/nwdp/nwrfc_gridded/script/dssgrid
 JAVA_EXE=/usr/lib/jvm/java/jre/bin/java
 JARDIR=${CWMS_EXE}/jar
 CLASSPATH="${JARDIR}/heclib.jar"

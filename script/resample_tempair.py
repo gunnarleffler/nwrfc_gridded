@@ -16,6 +16,7 @@ import pandas as pd
 import os
 import numpy as np
 import datetime
+import time
 import subprocess
 import string
 import sys
@@ -257,12 +258,14 @@ for index, row in basin_data.iterrows():
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
         print gridconvert
+        #time.sleep(1)
         subprocess.call(gridconvert, shell=True)
 
     #Now do it for QPE, which comes in at 6-hourly increments            
     else:
       time += loc2gmt
-      for t in range(len(time)):
+      for t in range(len(time)-1):
+        t += 1
         ta_resample = pyresample.kd_tree.resample_gauss(
             origin_grid,
             ta[t],
@@ -318,4 +321,5 @@ for index, row in basin_data.iterrows():
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
         print gridconvert
+        #time.sleep(1)
         subprocess.call(gridconvert, shell=True)

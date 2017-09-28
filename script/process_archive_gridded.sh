@@ -3,12 +3,13 @@
 #
 # converts to a .DSS file. 
 
+. ~/.env_vars
 
 # Resample netCDF gridded data to dss
 #---------------------------------------------------
 . env/bin/activate
 
-cd /home/rwcds/dx/nwdp/nwrfc_gridded/archive
+cd $DX_HOME/nwdp/nwrfc_gridded/archive
 
 for DATE in *; do
   echo $DATE
