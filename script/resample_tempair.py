@@ -129,7 +129,7 @@ for index, row in basin_data.iterrows():
   if not os.path.exists(outdir):
     os.makedirs(outdir)
 
-  for variable in ['QTE', 'QTF']:  # variable name to resample in source file
+  for variable in ['QTF', 'QTE']:  # variable name to resample in source file
     # load lat-lon-value of the origin data, 
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
@@ -220,10 +220,10 @@ for index, row in basin_data.iterrows():
                                    60, None, None)
 
       for t in (range(len(hourlyts))):
-        date = dates_disagg[t + 1].strftime('%Y%m%d%H')
-        year = dates_disagg[t + 1].strftime("%Y")
-        month = dates_disagg[t + 1].strftime("%m")
-        hr = dates_disagg[t + 1].strftime("%H")
+        date = dates_disagg[t].strftime('%Y%m%d%H')
+        year = dates_disagg[t].strftime("%Y")
+        month = dates_disagg[t].strftime("%m")
+        hr = dates_disagg[t].strftime("%H")
         filename = outdir + project + "_" + variable + date + '.asc'
         TheFile = open(filename, "w")
         TheFile.write("ncols %d\n" % x_size)
@@ -236,14 +236,14 @@ for index, row in basin_data.iterrows():
         TheFile.close()
         #now convert the asc and store in dss file
         dss_out = outdir + 'NWD_temp.' + year + '.' + month + '.dss'
-        starttime = dates_disagg[t].strftime('%d%b%Y:%H%M')
+        starttime = (dates_disagg[t] - 1).strftime('%d%b%Y:%H%M')
         # Some manipulation of date strings to get the 23-24 hour in correct format for DSS
         if hr == "00":
-          endtime = string.replace(dates_disagg[t - 3].strftime('%d%b%Y:%H%M'),
+          endtime = string.replace(dates_disagg[t - 4].strftime('%d%b%Y:%H%M'),
                                    '0000', '2400')
           print "starttime=" + starttime + "endtime=" + endtime
         else:
-          endtime = dates_disagg[t + 1].strftime('%d%b%Y:%H%M')
+          endtime = dates_disagg[t].strftime('%d%b%Y:%H%M')
 
         dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-" + variable + "/"
         gridconvert = os.path.join(

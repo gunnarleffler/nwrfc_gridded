@@ -59,7 +59,7 @@ for index, row in basin_data.iterrows():
   if not os.path.exists(outdir):
     os.makedirs(outdir)
 
-  for variable in ['QPE', 'QPF']:  # variable name to resample in source file
+  for variable in ['QPF', 'QPE']:  # variable name to resample in source file
     # load lat-lon-value of the origin data, 
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
