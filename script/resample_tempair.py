@@ -22,6 +22,7 @@ import string
 import sys
 import itertools
 import scipy.interpolate
+import pytz
 
 #execute on command line passing QPE and QPF netcdf grids for 1st and second arguemnt
 # Otherwise edit below to specify paths
@@ -38,10 +39,21 @@ buff = 10000.0  # buffer outside of model domain [m] (clip to larger extent)
 tmax_time = 23  # GMT
 tmin_time = 11  # GMT
 Dt = 6
-loc2gmt = 420.  #sift to GMT, minutes
 ''' ########## End Inputs ###############
 ##########################################'''
 '''############# Functions to use ##############################'''
+
+def timeOffset (dt):
+  """
+    dt is a datetime object
+    function will return 480 if in Standard time or 420 if in Daylight Savings time.
+  """
+  localtime = pytz.timezone('US/Pacific')
+  if bool(localtime.localize(dt).dst()):
+    return 420.
+  return 480.
+
+loc2gmt = timeOffset (datetime.datetime.now()) #Conversion from local time to GMT [min]
 
 
 def temp(df_daily, df_disagg, t_t_min, t_t_max, ts, t_begin, t_end):

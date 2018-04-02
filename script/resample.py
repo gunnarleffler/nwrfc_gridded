@@ -18,6 +18,7 @@ import subprocess
 import time
 import string
 import sys
+import pytz
 
 #execute on command line passing QPE and QPF netcdf grids for 1st and second arguemnt
 # Otherwise edit below to specify paths
@@ -32,9 +33,21 @@ source_res = 2500.0  # meters, source resolution used in interpolation method
 NODATA_value = -999.0
 buff = 10000.0  # buffer outside of model domain [m] (clip to larger extent)
 in2mm = 25.4
-loc2gmt = 420. #Conversion from local time to GMT [min]
 ''' ########## End Inputs ###############
 ##########################################'''
+
+def timeOffset (dt):
+  """
+    dt is a datetime object
+    function will return 480 if in Standard time or 420 if in Daylight Savings time.
+  """
+  localtime = pytz.timezone('US/Pacific')
+  if bool(localtime.localize(dt).dst()):
+    return 420.
+  return 480.
+
+loc2gmt = timeOffset (datetime.datetime.now()) #Conversion from local time to GMT [min]
+
 
 #Load master list of CWMS basins and attributes for clipping
 basin_data = pd.read_csv('basins2clip.csv')
@@ -64,8 +77,8 @@ for index, row in basin_data.iterrows():
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
     print fr
-    #ppt = fr.variables[variable][:, :, :]
-    ppt = fr.variables['QPF'][:, :, :] * in2mm
+    ppt = fr.variables[variable][:, :, :] * in2mm
+    #ppt = fr.variables['QPF'][:, :, :] * in2mm
     lons = fr.variables['x'][:]
     lats = fr.variables['y'][:]
     time = fr.variables['time'][:]+loc2gmt
@@ -122,10 +135,9 @@ for index, row in basin_data.iterrows():
       starttime = datetime.datetime.fromtimestamp(time[t] * 60 -
                                                   21600).strftime('%d%b%Y:%H%M')
       # Some manipulation of date strings to get the 23-24 hour in correct format for DSS
-      if hr == 0:
-        endtime = string.replace(
-            datetime.datetime.fromtimestamp(time[t] * 60 - 86400).strftime(
-                '%d%b%Y:%H%M'), '0000', '2400')
+      if hr == 0 or hr == 23:
+        endtime = datetime.datetime.fromtimestamp(time[t] * 60 - 86400).strftime(
+                '%d%b%Y:%H%M').replace( '0000', '2400').replace('2300','2400')
         print "starttime=" + starttime + "endtime=" + endtime
       else:
         endtime = datetime.datetime.fromtimestamp(time[t] *
