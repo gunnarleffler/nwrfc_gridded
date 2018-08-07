@@ -50,5 +50,8 @@ for line in cellfile:
 print "SubGridOrigin: %d, %d" % (xMin, yMin)
 print "SubGridExtents: %d, %d" % (xMax - xMin +1, yMax - yMin +1)
 
+print "basins2clip line:"
+print "%s,%d,%d,%d,%d" % (sys.argv[1].split(".")[0],yMax - yMin +1, xMax - xMin +1, xMin*2000, yMin*2000)
+
 cellfile.close()
 exit(0)

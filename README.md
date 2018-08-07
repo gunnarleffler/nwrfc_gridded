@@ -1,6 +1,6 @@
 GRIDDED DATA CONVERSION
 =======================
-This product downloads gridded data in netCDF format and converts to a .DSS file.
+This product downloads gridded data in netCDF format from the Northwest River Forecast Center and converts to a .DSS file.
 
 
 Adding Basins
@@ -27,4 +27,10 @@ https://www.nwrfc.noaa.gov/weather/netcdf/tx24f_has_2016121612f240_stegemil_2016
 
 Forecast Min Temp with layers representing minimum daily temperature extending 10 days into the future
 https://www.nwrfc.noaa.gov/weather/netcdf/tn24f_has_2016121612f240_stegemil_201612161342.nc.gz
+
+Rebuilding Virtual Environment
+------------------------------
+Currently this program uses Python 2.7. The dependency requirements are stored in docs/requirements.txt. You can use the following line rebuild the virtual environment.
+
+`pip install -r requirements.txt`
 
