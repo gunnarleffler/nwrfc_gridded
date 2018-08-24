@@ -9,6 +9,8 @@ The basins2clip.csv file contains subbasin information this program uses to crea
 basins to this file add a line to the file. The coordinates are in AEA. Utilites in the script/extents directory can be
 used to get basin extents from the models .mod file.
 
+Grid Units are in Meters.
+
 
 Example NetCDF Data
 ----

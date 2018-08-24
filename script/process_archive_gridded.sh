@@ -9,14 +9,19 @@
 #---------------------------------------------------
 . env/bin/activate
 
-cd $DX_HOME/nwdp/nwrfc_gridded/archive
+cd $DX_HOME/nwdp/nwrfc_gridded/script
 
-for DATE in *; do
+DATELIST=`ls -1 ../archive | awk -F"." '{print $2}' | sort -u`
+
+for DATE in $DATELIST; do
   echo $DATE
-  cd ../script
-  pwd 
-  ./resample_tempair.py ../archive/${DATE}/QTE.${DATE}12.nc ../archive/${DATE}/QTF.${DATE}12.nc
-  ./resample.py ../archive/${DATE}/QPE.${DATE}12.nc ../archive/${DATE}/QPF.${DATE}12.nc
+
+  gunzip -v ../archive/*${DATE}.nc.gz
+
+  ./resample_tempair.py ../archive/QTE.${DATE}.nc ../archive/QTF.${DATE}.nc
+  ./resample.py ../archive/QPE.${DATE}.nc ../archive/QPF.${DATE}.nc
+
+  gzip -v ../archive/*${DATE}.nc
 
   rm ../temp/*.asc
 
