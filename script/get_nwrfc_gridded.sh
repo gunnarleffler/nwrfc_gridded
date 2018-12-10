@@ -51,7 +51,7 @@ cd ../temp
 #---------------------------------------------------
 cd ../script
 . env/bin/activate
-./resample_tempair.py ../raw/QTE.${DATE}12.nc ../raw/QTF.${DATE}12.nc
+./resample_tempair_v2.py ../raw/QTE.${DATE}12.nc ../raw/QTF.${DATE}12.nc
 ./resample.py ../raw/QPE.${DATE}12.nc ../raw/QPF.${DATE}12.nc
 
 rm ../raw/*.nc
