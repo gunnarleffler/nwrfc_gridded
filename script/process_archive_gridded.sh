@@ -13,15 +13,14 @@ cd $DX_HOME/nwdp/nwrfc_gridded/script
 
 DATELIST=`ls -1 ../archive | awk -F"." '{print $2}' | sort -u`
 echo $DATELIST
-DATELIST="2019022712"
+#DATELIST="2019022712"
 cnt=6; 
 for DATE in $DATELIST; do
-  if [[ $DATE == *"2019"* ]]; then
+  if [[ $DATE == *"201904"* ]]; then
     echo $DATE
     let cnt=cnt+1;
     #Each netCDF file from the RFC has minimum 7 days worth of data
     #So we only need to process every 7th file
-    cnt=7; 
     if [ $cnt -eq 7 ]; then
     gunzip -v ../archive/*${DATE}.nc.gz
 
@@ -33,6 +32,7 @@ for DATE in $DATELIST; do
 
     rm ../temp/*.asc
 
+    cnt=6; 
     fi;
   fi;
 done
