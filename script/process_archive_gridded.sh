@@ -16,7 +16,7 @@ echo $DATELIST
 #DATELIST="2019022712"
 cnt=6; 
 for DATE in $DATELIST; do
-  if [[ $DATE == *"201904"* ]]; then
+  if [[ $DATE == *"201906"* ]]; then
     echo $DATE
     let cnt=cnt+1;
     #Each netCDF file from the RFC has minimum 7 days worth of data

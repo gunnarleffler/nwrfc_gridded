@@ -7,6 +7,8 @@
 . ~/.env_vars
 . $DX_HOME/control/lib/dx_functions.sh
 
+export TZ=US/Pacific
+
 # Exit unless flag file indicates we run on this server
 #------------------------------------------------------
 
