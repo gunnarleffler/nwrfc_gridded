@@ -43,8 +43,8 @@ def timeOffset (dt):
   """
   localtime = pytz.timezone('US/Pacific')
   if bool(localtime.localize(dt).dst()):
-    return 420.
-  return 480.
+    return 360.
+  return 420.
 
 loc2gmt = timeOffset (datetime.datetime.now()) #Conversion from local time to GMT [min]
 
@@ -81,7 +81,7 @@ for index, row in basin_data.iterrows():
     #ppt = fr.variables['QPF'][:, :, :] * in2mm
     lons = fr.variables['x'][:]
     lats = fr.variables['y'][:]
-    time = fr.variables['time'][:]+loc2gmt
+    time = fr.variables['time'][:]
     fr.close()
 
     lon, lat = np.meshgrid(lons, lats)
@@ -114,11 +114,14 @@ for index, row in basin_data.iterrows():
           sigmas=source_res / 2)
 
       #now write out the data in asc
+      t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
+      time[t] += timeOffset(t_stamp)
+      t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
 
-      date = datetime.datetime.fromtimestamp(time[t] * 60).strftime('%Y%m%d%H')
-      year = str(datetime.datetime.fromtimestamp(time[t] * 60).year)
-      month = datetime.datetime.fromtimestamp(time[t] * 60).strftime("%m")
-      hr = datetime.datetime.fromtimestamp(time[t] * 60).hour
+      date = t_stamp.strftime('%Y%m%d%H')
+      year = str(t_stamp.year)
+      month = t_stamp.strftime("%m")
+      hr = t_stamp.hour
       filename = outdir + project + "_" + variable + date + '.asc'
       TheFile = open(filename, "w")
       TheFile.write("ncols %d\n" % x_size)
@@ -140,8 +143,7 @@ for index, row in basin_data.iterrows():
                 '%d%b%Y:%H%M').replace( '0000', '2400').replace('2300','2400')
         print "starttime=" + starttime + "endtime=" + endtime
       else:
-        endtime = datetime.datetime.fromtimestamp(time[t] *
-                                                  60).strftime('%d%b%Y:%H%M')
+        endtime = t_stamp.strftime('%d%b%Y:%H%M')
       dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-" + variable + "/"
       gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'

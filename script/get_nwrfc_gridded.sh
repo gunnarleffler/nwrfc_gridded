@@ -49,6 +49,7 @@ yes | gunzip *.gz
 cd ../temp
 #rm *.asc
 
+export TZ=UTC
 # Resample netCDF gridded data to dss
 #---------------------------------------------------
 cd ../script
