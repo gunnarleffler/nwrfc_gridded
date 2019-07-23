@@ -24,9 +24,9 @@ for DATE in $DATELIST; do
     if [ $cnt -eq 7 ]; then
     gunzip -v ../archive/*${DATE}.nc.gz
 
-    ./resample_tempair.py ../archive/QTE.${DATE}.nc ../archive/QTF.${DATE}.nc
-    ./resample_tempair_v2.py ../archive/QTE.${DATE}.nc ../archive/QTF.${DATE}.nc
-    ./resample.py ../archive/QPE.${DATE}.nc ../archive/QPF.${DATE}.nc
+    ./resample_tempair.py ../archive/QTE.${DATE}.nc 
+    #./resample_tempair_v2.py ../archive/QTE.${DATE}.nc ../archive/QTF.${DATE}.nc
+    #./resample.py ../archive/QPE.${DATE}.nc ../archive/QPF.${DATE}.nc
 
     gzip -v ../archive/*${DATE}.nc
 

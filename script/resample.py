@@ -58,7 +58,6 @@ for index, row in basin_data.iterrows():
   nrows = row['nrows']
   xllcorner = row['xllcorner']
   yllcorner = row['yllcorner']
-
   # Make target arrays for cell centroids
   lon_targ = np.arange(xllcorner - buff + target_res * 0.5, (
       (ncols + buff * 2 / target_res) * 2000.0) +
@@ -77,8 +76,10 @@ for index, row in basin_data.iterrows():
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
     print fr
-    ppt = fr.variables[variable][:, :, :] * in2mm
-    #ppt = fr.variables['QPF'][:, :, :] * in2mm
+    try:
+      ppt = fr.variables[variable][:, :, :] * in2mm
+    except:
+      ppt = fr.variables['QPF'][:, :, :] * in2mm
     lons = fr.variables['x'][:]
     lats = fr.variables['y'][:]
     time = fr.variables['time'][:]
@@ -148,7 +149,6 @@ for index, row in basin_data.iterrows():
       gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
         ) + " zlib=true GRID=SHG in=" + filename + " dss=" + dss_out + " path=" + dss_path
-      print gridconvert
       subprocess.call(gridconvert, shell=True)
 
       #The following block is for writing blended paths
