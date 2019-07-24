@@ -51,10 +51,11 @@ def timeOffset (dt):
   localtime = pytz.timezone('US/Pacific')
   if bool(localtime.localize(dt).dst()):
     print "DST"
-    return 360.
-  return 420.
+    return 420.
+  return 480.
 
-loc2gmt = timeOffset (datetime.datetime.now()) #Conversion from local time to GMT [min]
+def snap (value, interval):
+  return int(round (value/float(interval))*interval)
 
 '''############# End of functions ##############################'''
 
@@ -126,9 +127,9 @@ for index, row in basin_data.iterrows():
        ta_resample.set_fill_value(NODATA_value)
        ta_resample = ta_resample.filled()
      #now write out the data in asc
+     time[t] += timeOffset(datetime.datetime.fromtimestamp(time[t] * 60))
      t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
-     time[t] += timeOffset(t_stamp)
-     t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
+     t_stamp = t_stamp.replace(hour=snap(t_stamp.hour,6))
 
      date = t_stamp.strftime('%Y%m%d%H')
      year = str(t_stamp.year)
@@ -146,16 +147,15 @@ for index, row in basin_data.iterrows():
      TheFile.close()
      #now convert the asc and store in dss file
      dss_out = outdir + 'NWD_temp.' + year + '.' + month + '.dss'
-     starttime = datetime.datetime.fromtimestamp(time[
-         t] * 60 - 21600).strftime('%d%b%Y:%H%M')
-     # Some manipulation of date strings to get the 23-24 hour in correct format for DSS
+
+     # Some manipulation of date strings to get the 24 hour in correct format for DSS
      if hr == 0:
-       endtime = string.replace(
-           datetime.datetime.fromtimestamp(time[t] * 60 - 86400).strftime(
-               '%d%b%Y:%H%M'), '0000', '2400')
+       endtime = (t_stamp - datetime.timedelta(hours=24)).strftime('%d%b%Y:%H%M').replace( '0000', '2400')
+       starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
        print "starttime=" + starttime + "endtime=" + endtime
      else:
        endtime = t_stamp.strftime('%d%b%Y:%H%M')
+       starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
 
      dss_path = "/SHG/" + project + "/TEMPERATURE/" + endtime + "//RFC-" + variable + "/"
      gridconvert = os.path.join(

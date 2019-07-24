@@ -27,7 +27,12 @@ Execute on command line passing QPE and QPF netcdf grids for 1st and second argu
 Otherwise edit below to specify paths, push outher inputs to arguments for more flexibility
 ###################################
 ######## Edit Inputs here #########'''
-grids = {"QPE": sys.argv[1], "QPF": sys.argv[2]}
+try:
+  grids = {"QPE": sys.argv[1], "QPF": sys.argv[2]}
+  gridkeys = ["QPF", "QPE"]
+except:
+  grids = {"QPE": sys.argv[1]}
+  gridkeys = ["QPE"]
 target_res = 2000.0  # meters, resolution of target grid
 source_res = 2500.0  # meters, source resolution used in interpolation method
 NODATA_value = -999.0
@@ -43,11 +48,11 @@ def timeOffset (dt):
   """
   localtime = pytz.timezone('US/Pacific')
   if bool(localtime.localize(dt).dst()):
-    return 360.
-  return 420.
+    return 420.
+  return 480.
 
-loc2gmt = timeOffset (datetime.datetime.now()) #Conversion from local time to GMT [min]
-
+def snap (value, interval):
+  return int(round (value/float(interval))*interval)
 
 #Load master list of CWMS basins and attributes for clipping
 basin_data = pd.read_csv('basins2clip.csv')
@@ -71,7 +76,7 @@ for index, row in basin_data.iterrows():
   if not os.path.exists(outdir):
     os.makedirs(outdir)
 
-  for variable in ['QPF', 'QPE']:  # variable name to resample in source file
+  for variable in gridkeys:  # variable name to resample in source file
     # load lat-lon-value of the origin data, 
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
@@ -115,9 +120,9 @@ for index, row in basin_data.iterrows():
           sigmas=source_res / 2)
 
       #now write out the data in asc
+      time[t] += timeOffset(datetime.datetime.fromtimestamp(time[t] * 60))
       t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
-      time[t] += timeOffset(t_stamp)
-      t_stamp = datetime.datetime.fromtimestamp(time[t] * 60)
+      t_stamp = t_stamp.replace(hour=snap(t_stamp.hour,6))
 
       date = t_stamp.strftime('%Y%m%d%H')
       year = str(t_stamp.year)
@@ -136,15 +141,14 @@ for index, row in basin_data.iterrows():
       TheFile.close()
       #now convert the asc and store in dss file
       dss_out = outdir + 'NWD_precip.' + year + '.' + month + '.dss'
-      starttime = datetime.datetime.fromtimestamp(time[t] * 60 -
-                                                  21600).strftime('%d%b%Y:%H%M')
-      # Some manipulation of date strings to get the 23-24 hour in correct format for DSS
-      if hr == 0 or hr == 23:
-        endtime = datetime.datetime.fromtimestamp(time[t] * 60 - 86400).strftime(
-                '%d%b%Y:%H%M').replace( '0000', '2400').replace('2300','2400')
+      # Some manipulation of date strings to get the 24 hour in correct format for DSS
+      if hr == 0:
+        endtime = (t_stamp - datetime.timedelta(hours=24)).strftime('%d%b%Y:%H%M').replace( '0000', '2400')
+        starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
         print "starttime=" + starttime + "endtime=" + endtime
       else:
         endtime = t_stamp.strftime('%d%b%Y:%H%M')
+        starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
       dss_path = "/SHG/" + project + "/PRECIP/" + starttime + "/" + endtime + "/RFC-" + variable + "/"
       gridconvert = os.path.join(
             os.getcwd(), 'asc2DssGrid.sh'
