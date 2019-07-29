@@ -16,7 +16,7 @@ echo $DATELIST
 #DATELIST="2019022712"
 cnt=6; 
 for DATE in $DATELIST; do
-  if [[ $DATE == *"201"* ]]; then
+  if [[ $DATE == *"201812"* ]]; then
     echo $DATE
     let cnt=cnt+1;
     #Each netCDF file from the RFC has minimum 7 days worth of data
@@ -24,15 +24,23 @@ for DATE in $DATELIST; do
     if [ $cnt -eq 7 ]; then
     gunzip -v ../archive/*${DATE}.nc.gz
 
+    #RFC changed format for temperature input in late 2018
+    if [[ $DATE = *"2017"* ]] || [[ "$fname" = *"20180"* ]]; then
+      cnt=1; 
+      echo "ORIGINAL"
+      ./resample_tempair.py ../archive/QTE.${DATE}.nc 
+    else
+      cnt=6; 
+      echo "NEW"
+      ./resample_tempair_v2.py ../archive/QTE.${DATE}.nc 
+    fi
+
     ./resample.py ../archive/QPE.${DATE}.nc 
-    ./resample_tempair.py ../archive/QTE.${DATE}.nc 
-    ./resample_tempair_v2.py ../archive/QTE.${DATE}.nc ../archive/QTF.${DATE}.nc
 
     gzip -v ../archive/*${DATE}.nc
 
     rm ../temp/*.asc
 
-    cnt=1; 
     fi;
   fi;
 done

@@ -33,7 +33,12 @@ Execute on command line passing QPE and QPF netcdf grids for 1st and second argu
 Otherwise edit below to specify paths, push outher inputs to arguments for more flexibility
 ###################################
 ######## Edit Inputs here #########'''
-grids = {"QTE": sys.argv[1], "QTF": sys.argv[2]}
+try:
+  grids = {"QTE": sys.argv[1], "QTF": sys.argv[2]}
+  gridkeys = ["QTF", "QTE"]
+except:
+  grids = {"QTE": sys.argv[1]}
+  gridkeys = ["QTE"]
 target_res = 2000.0  # meters, resolution of target grid
 source_res = 2500.0  # meters, source resolution used in interpolation method
 NODATA_value = -999.00000
@@ -82,7 +87,7 @@ for index, row in basin_data.iterrows():
   if not os.path.exists(outdir):
     os.makedirs(outdir)
 
-  for variable in ['QTF', 'QTE']:  # variable name to resample in source file
+  for variable in gridkeys:  # variable name to resample in source file
     # load lat-lon-value of the origin data, 
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
