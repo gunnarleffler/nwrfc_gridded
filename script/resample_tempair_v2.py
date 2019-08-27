@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Fri Jan 27 12:21:27 2017
@@ -55,7 +55,7 @@ def timeOffset (dt):
   """
   localtime = pytz.timezone('US/Pacific')
   if bool(localtime.localize(dt).dst()):
-    print "DST"
+    print("DST")
     return 420.
   return 480.
 
@@ -91,7 +91,7 @@ for index, row in basin_data.iterrows():
     # load lat-lon-value of the origin data, 
     # may need to change 'XLONG' 'XLAT' to be consistent with source netcdf
     fr = Dataset(grids[variable])
-    print fr
+    print(fr)
     #ppt = fr.variables[variable][:, :, :]
     ta = fr.variables[variable][:, :, :]
     lons = fr.variables['x'][:]
@@ -157,7 +157,7 @@ for index, row in basin_data.iterrows():
      if hr == 0:
        endtime = (t_stamp - datetime.timedelta(hours=24)).strftime('%d%b%Y:%H%M').replace( '0000', '2400')
        starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
-       print "starttime=" + starttime + "endtime=" + endtime
+       print("starttime=" + starttime + "endtime=" + endtime)
      else:
        endtime = t_stamp.strftime('%d%b%Y:%H%M')
        starttime = (t_stamp - datetime.timedelta(hours=6)).strftime('%d%b%Y:%H%M')
@@ -166,7 +166,7 @@ for index, row in basin_data.iterrows():
      gridconvert = os.path.join(
          os.getcwd(), 'asc2DssGrid.sh'
      ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
-     print gridconvert
+     print(gridconvert)
      subprocess.call(gridconvert, shell=True)
 
      #The following block is for writing blended paths
@@ -174,6 +174,6 @@ for index, row in basin_data.iterrows():
      gridconvert = os.path.join(
          os.getcwd(), 'asc2DssGrid.sh'
      ) + " zlib=true GRID=SHG dunits=\"DEG\ F\" dtype=INST-VAL in=" + filename + " dss=" + dss_out + " path=" + dss_path
-     print gridconvert
+     print(gridconvert)
      #time.sleep(1)
      subprocess.call(gridconvert, shell=True)
